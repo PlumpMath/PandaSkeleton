@@ -7,6 +7,6 @@ from libs.Game import Game, Plugin
         
 # Instantiate and run the game
 game = Game()
-game.registerPlugin(Plugin.Plugin())
+game.registerPlugin('plugin', Plugin.Plugin())
 
 game.run()
