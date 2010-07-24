@@ -18,7 +18,7 @@ class Game(DirectObject.DirectObject):
     		raise Exception, "Plugin must be an instance of Plugin class."
     #end registerPlugin
     
-    def getPlugin(self, name)
+    def getPlugin(self, name):
     	return self._plugins[name]
     # end getPlugin
     	
