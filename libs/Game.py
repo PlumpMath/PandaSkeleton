@@ -1,5 +1,6 @@
 import direct.directbase.DirectStart
 from direct.showbase import DirectObject
+import sys
 
 import Plugin
  
@@ -13,6 +14,7 @@ class Game(DirectObject.DirectObject):
     	
     def registerPlugin(self, name, plugin):
     	if isinstance(plugin, Plugin.Plugin):
+    		plugin.setGame(self)
     		self._plugins[name] = plugin
     	else:
     		raise Exception, "Plugin must be an instance of Plugin class."
@@ -37,6 +39,9 @@ class Game(DirectObject.DirectObject):
     			
     	self._shutDown()
     # end run
+    
+    def quit(self):
+    	self.quit = True
     			
     def _startUp(self):
     	for name, plugin in self._plugins.iteritems():
@@ -57,6 +62,9 @@ class Game(DirectObject.DirectObject):
     
     def _shutDown(self):
 	    for name, plugin in self._plugins.iteritems():
-	    	plugin.startUp()
+	    	plugin.shutDown()
+	    
+	    # exit the application
+	    sys.exit()
 	# end _shutDown
 # end Game
