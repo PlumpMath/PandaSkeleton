@@ -2,14 +2,20 @@ import direct.directbase.DirectStart
 from direct.showbase import DirectObject
 import sys
 
-import Plugin
+import Plugin, Scene
  
 class Game(DirectObject.DirectObject):
     def __init__(self):
+    	# Game states
     	self.quit = False
     	self.paused = False
     	
+    	# Plugins
     	self._plugins = dict()
+    	
+    	# Scenes
+    	self._scenes = list()
+    	self._currentScene = None
     # end __init__
     	
     def registerPlugin(self, name, plugin):
@@ -23,6 +29,27 @@ class Game(DirectObject.DirectObject):
     def getPlugin(self, name):
     	return self._plugins[name]
     # end getPlugin
+    
+    def pushScene(self, scene):
+    	if self._currentScene != None:
+    		self._currentScene.hideScene()
+    		self._scenes.append(self._currentScene)
+    		
+    	self._currentScene = scene
+    	if self._currentScene.loadScene():
+    		self._currentScene.showScene()
+    # end pushScene
+    
+    def popScene(self):
+    	if self._currentScene != None:
+    		self._currentScene.hideScene()
+    		self._currentScene.unloadScene()
+    		self._currentScene = None
+    		
+    	if self._scenes.len() > 0:
+    		self._currentScene = self._scenes.pop()
+    		self._currentScene.showScene()
+    # end popScene
     	
     def run(self):
     	'''Our main run loop.'''
@@ -30,7 +57,7 @@ class Game(DirectObject.DirectObject):
     
     	while(self.quit == False):
     		if(self.paused):
-    			# Call our pause handler
+    			# TODO Call our pause handler?
     			print "Paused."
     		else:
     			self._preStep()
@@ -42,8 +69,11 @@ class Game(DirectObject.DirectObject):
     
     def quit(self):
     	self.quit = True
+    # end quit
     			
     def _startUp(self):
+    	self.quit = False
+    	
     	for name, plugin in self._plugins.iteritems():
     		plugin.startUp()
     # end _startUp
