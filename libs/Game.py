@@ -6,9 +6,11 @@ import Plugin, Scene
  
 class Game(DirectObject.DirectObject):
     def __init__(self):
+    	self.VERSION = 'PandaSkeleton v0.0.1';
+    
     	# Game states
-    	self.quit = False
-    	self.paused = False
+    	self._quit = False
+    	self._paused = False
     	
     	# Plugins
     	self._plugins = dict()
@@ -16,6 +18,8 @@ class Game(DirectObject.DirectObject):
     	# Scenes
     	self._scenes = list()
     	self._currentScene = None
+    	
+    	print self.VERSION
     # end __init__
     	
     def registerPlugin(self, name, plugin):
@@ -55,8 +59,8 @@ class Game(DirectObject.DirectObject):
     	'''Our main run loop.'''
     	self._startUp()
     
-    	while(self.quit == False):
-    		if(self.paused):
+    	while(self._quit == False):
+    		if(self._paused):
     			# TODO Call our pause handler?
     			print "Paused."
     		else:
@@ -68,11 +72,11 @@ class Game(DirectObject.DirectObject):
     # end run
     
     def quit(self):
-    	self.quit = True
+    	self._quit = True
     # end quit
     			
     def _startUp(self):
-    	self.quit = False
+    	self._quit = False
     	
     	for name, plugin in self._plugins.iteritems():
     		plugin.startUp()
@@ -95,6 +99,7 @@ class Game(DirectObject.DirectObject):
 	    	plugin.shutDown()
 	    
 	    # exit the application
+	    print "Goodbye!"
 	    sys.exit()
 	# end _shutDown
 # end Game

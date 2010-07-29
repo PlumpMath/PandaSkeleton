@@ -1,17 +1,17 @@
 class Scene():
-	loadScene(self):
+	def loadScene(self):
 		return True
 	# end loadScene
 		
-	showScene(self):
+	def showScene(self):
 		return True
 	# end showScene 
 		
-	hideScene(self):
+	def hideScene(self):
 		return True
 	# end hideScene
 		
-	unloadScene(self):
+	def unloadScene(self):
 		return True
 	# end unloadScene
 # end Scene
